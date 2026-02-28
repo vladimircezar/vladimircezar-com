@@ -1,38 +1,25 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
-IMAGE_NAME=vladimir-com-landing-page
-CONTAINER_NAME=vladimir-com-landing-page-container
-PORT=8080
-URL=http://localhost:$PORT
+PORT="${1:-8080}"
+URL="http://localhost:${PORT}"
 
-echo "🔧 Building Docker image..."
-docker build -t $IMAGE_NAME .
+echo "🚀 Starting local preview at ${URL}"
 
-# Remove existing container if needed
-if [ "$(docker ps -aq -f name=$CONTAINER_NAME)" ]; then
-  echo "🧹 Removing existing container..."
-  docker rm -f $CONTAINER_NAME > /dev/null
-fi
-
-echo "🚀 Running container at $URL..."
-docker run -d --name $CONTAINER_NAME -p $PORT:80 $IMAGE_NAME
-
-sleep 2
-
-# Open in browser
+# Open in browser in the background when available.
 case "$OSTYPE" in
-  darwin*)  open $URL ;;
-  linux*)   xdg-open $URL ;;
-  msys*|cygwin*) start $URL ;;
-  *)        echo "🔗 Open $URL manually" ;;
+  darwin*)  open "$URL" >/dev/null 2>&1 || true ;;
+  linux*)   xdg-open "$URL" >/dev/null 2>&1 || true ;;
+  msys*|cygwin*) start "$URL" >/dev/null 2>&1 || true ;;
 esac
 
-echo "📝 Showing logs. Press Ctrl+C to stop preview..."
+if command -v python3 >/dev/null 2>&1; then
+  exec python3 -m http.server "$PORT"
+fi
 
-# Trap Ctrl+C to stop the container
-trap "echo '🛑 Stopping container...'; docker stop $CONTAINER_NAME > /dev/null" INT
+if command -v python >/dev/null 2>&1; then
+  exec python -m SimpleHTTPServer "$PORT"
+fi
 
-# Follow logs
-docker logs -f $CONTAINER_NAME
-echo "🛑 Stopping container..."
+echo "❌ Python is required to run local preview."
+exit 1
