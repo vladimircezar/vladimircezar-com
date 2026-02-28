@@ -1,7 +1,7 @@
 ---
 title: "Why? How my career started"
 description: "Learning BASIC on an 8-bit computer, discovering randomness, and getting hooked on computing."
-pubDatetime: 2011-01-01T09:00:00-05:00
+pubDatetime: 2026-02-28T09:00:00-05:00
 tags: ["writing", "origin", "computing"]
 ---
 
