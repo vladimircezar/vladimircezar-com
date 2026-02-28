@@ -2,8 +2,7 @@ export const SITE = {
   website: "https://vladimircezar.com", // replace this with your deployed domain
   author: "Vladimir Cezar",
   profile: "",
-  desc:
-    "Hacker. Christian. Pilot. Sailor. I build systems, fly when I can, and spend time at sea whenever I get the chance.",
+  desc: "Hacker, Christian, Sailor, Pilot",
   title: "Vladimir Cezar",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
